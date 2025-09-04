@@ -19,13 +19,13 @@ import lombok.Setter;
 public class RoleRequestDTO {
 
 
-    @NotBlank(message = "Username is mandatory")
-    @NotNull(message = "Username is mandatory")
+    @NotBlank(message = "name is mandatory")
+    @NotNull(message = "name is mandatory")
     @Size(min = 3, max = 50,message = "size more than 3")
     private String name;
 
-    @NotBlank(message = "Username is mandatory")
-    @NotNull(message = "Username is mandatory")
+    @NotBlank(message = "description is mandatory")
+    @NotNull(message = "description is mandatory")
     @Size(min = 3, max = 50,message = "size more than 3")
     private String description;
 

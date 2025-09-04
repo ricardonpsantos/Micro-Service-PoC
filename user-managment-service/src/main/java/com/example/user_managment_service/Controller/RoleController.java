@@ -5,6 +5,7 @@ import com.example.user_managment_service.Controller.Dto.Response.RoleResponseDT
 import com.example.user_managment_service.Controller.Dto.Response.UserResponseDTO;
 import com.example.user_managment_service.Service.RoleService;
 import com.example.user_managment_service.Service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,11 +22,13 @@ public class RoleController {
         this.roleService = roleService;
     }
 
+    @Operation(summary = "Retorna todas as Roles")
     @GetMapping("/all")
     public ResponseEntity<List<RoleResponseDTO>> getAllRoles() {
         return new ResponseEntity<>(roleService.getAllRoles(), HttpStatus.OK);
     }
 
+    @Operation(summary = "Adiciona uma nova Role")
     @PostMapping("/addnew")
     public ResponseEntity<RoleResponseDTO> addNewRole(@Valid @RequestBody RoleRequestDTO roleRequestDTO) {
         return new ResponseEntity<>(roleService.addNewRole(roleRequestDTO),HttpStatus.CREATED);
