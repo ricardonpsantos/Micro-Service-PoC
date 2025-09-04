@@ -1,0 +1,17 @@
+Este projeto tem como objectivo aplicar conhecimentos de spring boot e java e todas as frameworks mais recentes
+
+Neste projeto usamos
+ - spring boot
+ - hibernate
+ - bd h2
+ - loggingAspect
+ - slf4j
+
+
+ o que implementar :
+ - log com elastic
+ - Cache: Redis para leituras frequentes (ex: perfis de usuários)
+ - Estratégias de versionamento de schema: Flyway ou Liquibase
+ - Usar rabiitMQ
+ - Docker para cada microserviço
+ - CI/CD: GitHub Actions, GitLab CI, Jenkins

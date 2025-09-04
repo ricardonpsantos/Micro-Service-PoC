@@ -1,0 +1,27 @@
+<configuration>
+    <!-- Dev: logs no console legíveis -->
+    <springProfile name="dev">
+        <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder>
+                <pattern>[%d{yyyy-MM-dd HH:mm:ss}] [%X{requestId}] [%-5level] [%logger] - %msg%n</pattern>
+            </encoder>
+        </appender>
+        <root level="info">
+            <appender-ref ref="Console"/>
+        </root>
+    </springProfile>
+
+    <!-- Prod: logs JSON estruturados -->
+    <springProfile name="prod">
+        <appender name="JSONConsole" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+                <!-- Campos customizados opcionais -->
+                <customFields>{"app_name":"user-service"}</customFields>
+            </encoder>
+        </appender>
+
+        <root level="INFO">
+            <appender-ref ref="JSONConsole"/>
+        </root>
+    </springProfile>
+</configuration>
