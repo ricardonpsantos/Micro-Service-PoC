@@ -1,4 +1,4 @@
-package com.example.user_managment_service.Utils;
+package com.example.event_managment_service.Utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,43 +20,6 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class LoggingAspect {
 
-    /*
-
-    @Pointcut("execution(* com.example.user_managment_service.Controller..*(..)) || " +
-            "execution(* com.example.user_managment_service.Service..*(..)) || " +
-            "execution(* com.example.user_managment_service.Repository..*(..))")
-    public void pointCut() {
-    }
-
-    @Before(value = "pointCut()")
-    public void logMethodBefore(JoinPoint joinPoint) {
-        List<String> args = Arrays.stream(joinPoint.getArgs()).map(Object::toString).toList();
-        Logger logger = LoggerFactory.getLogger(joinPoint.getTarget().getClass());
-        if (!joinPoint.getTarget().getClass().toString().contains("jdk")){
-            logger.info(String.valueOf(args));
-        }
-    }
-
-    @AfterReturning(pointcut = "pointCut()", returning = "result")
-    public void logMethodAfterReturning(JoinPoint joinPoint, Object result) {
-
-        Logger logger = LoggerFactory.getLogger(joinPoint.getTarget().getClass());
-        logger.info("AFTER RETURNING");
-        // Log dos argumentos
-        List<String> args = Arrays.stream(joinPoint.getArgs()).map(Object::toString).toList();
-        logger.info("Arguments: {}", args);
-
-        // Log do retorno
-        if (result != null) {
-            logger.info("Returned: {}", result.toString());
-        } else {
-            logger.info("Returned: null");
-        }
-    }
-
-
-     */
-
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     // Pointcut: apenas métodos das camadas Controller, Service e Repository
@@ -66,16 +29,8 @@ public class LoggingAspect {
     public void appLayers() {
     }
 
-    @Pointcut("execution(* com.example.user_managment_service.Controller..*(..)) ")
-    public void appLayerController() {
-    }
 
-    @Pointcut("execution(* com.example.user_managment_service.Service..*(..)) ")
-    public void appLayerService() {
-    }
-
-
-    @Before("appLayerController()")
+    @Before("appLayers()")
     public void addRequestId() {
         HttpServletRequest request =
                 ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
@@ -105,7 +60,7 @@ public class LoggingAspect {
         logger.info("After Returning -> Method: {} | Returned: {}", methodName, resultJson);
     }
 
-    @After("appLayerController()")
+    @After("appLayers()")
     public void clearMDC() {
         MDC.remove("requestId");
     }

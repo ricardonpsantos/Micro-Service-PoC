@@ -15,3 +15,9 @@ Neste projeto usamos
  - Usar rabiitMQ
  - Docker para cada microserviço
  - CI/CD: GitHub Actions, GitLab CI, Jenkins
+
+
+ --- VERSÂO DO SDK -  17
+ --- Language Level - 21
+
+ -- Swagger : http://localhost:8081/swagger-ui/index.html
