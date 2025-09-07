@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -16,7 +19,7 @@ public class Participant {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer participant_id;
+    private Integer id;
 
     @Column(nullable = false)
     private String name;
@@ -27,10 +30,11 @@ public class Participant {
     @Column(nullable = false)
     private String address;
 
-    @Column(nullable = false, unique = true)
-    private String identification_id;
+    @Column(nullable = false)
+    private String phone;
 
-
-
+    @Column(name = "identification_id", nullable = false, unique = true)
+    private String identificationId;
 
 }
+

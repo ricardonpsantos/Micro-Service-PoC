@@ -1,6 +1,6 @@
 package com.example.event_managment_service.Service;
 
-import com.example.event_managment_service.Controller.Dto.Response.ParticipantsResponseDto;
+import com.example.event_managment_service.Controller.Dto.Response.Participants.ParticipantsResponseDto;
 
 import java.util.List;
 

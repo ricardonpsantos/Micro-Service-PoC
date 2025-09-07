@@ -9,7 +9,6 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import java.util.UUID;
 
 
-///VAI APANHAR QUALQUER REQUESIÇÃO VIA REST
 public class MdcInterceptor implements HandlerInterceptor {
 
     @Override

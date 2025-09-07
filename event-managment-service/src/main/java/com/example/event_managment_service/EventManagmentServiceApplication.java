@@ -4,7 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 
-@SpringBootApplication
+@SpringBootApplication(exclude = {
+		org.springframework.boot.autoconfigure.amqp.RabbitAutoConfiguration.class,
+		org.springframework.boot.actuate.autoconfigure.amqp.RabbitHealthContributorAutoConfiguration.class
+})
 @EnableFeignClients(basePackages = "com/example/event_managment_service/Integration")
 public class EventManagmentServiceApplication {
 

@@ -1,9 +1,12 @@
 package com.example.user_managment_service.Controller;
 
+import com.example.user_managment_service.Controller.Dto.Request.CreateUserRequest;
 import com.example.user_managment_service.Controller.Dto.Request.UserCreateRequestDto;
 import com.example.user_managment_service.Controller.Dto.Response.AllUsersWithRolesDTO;
 import com.example.user_managment_service.Controller.Dto.Response.UserResponseDTO;
 import com.example.user_managment_service.Service.UserService;
+import com.example.user_managment_service.shared.UserCreatedEvent;
+import com.example.user_managment_service.shared.UserEventsPublisher;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,14 +16,18 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
 @RequestMapping("/users")
 public class UserController {
     private final UserService userService;
-    public UserController(UserService userService) {
+    private final UserEventsPublisher publisher;
+
+    public UserController(UserService userService, UserEventsPublisher publisher) {
         this.userService = userService;
+        this.publisher = publisher;
     }
 
     @Operation(summary = "Lista todos os usuários")
@@ -50,6 +57,21 @@ public class UserController {
     @GetMapping("/allwithroles")
     public ResponseEntity<List<AllUsersWithRolesDTO>> getAllUsersWithRoles(){
         return new ResponseEntity<>(userService.getAllUsersWithRoles(),HttpStatus.OK);
+    }
+
+    @Operation(summary = "Rota com rabit")
+    @PostMapping("/rabbit")
+    public void create(@RequestBody CreateUserRequest req) {
+        // 1) tua lógica de persistência (salvar no DB, gerar id etc.)
+        String id = java.util.UUID.randomUUID().toString();
+
+        // 2) publicar evento
+        publisher.userCreated(new UserCreatedEvent(
+                id,
+                req.email(),
+                req.name(),
+                new BigDecimal("0.00")
+        ));
     }
 
 

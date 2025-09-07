@@ -1,6 +1,6 @@
 package com.example.event_managment_service.Controller;
 
-import com.example.event_managment_service.Controller.Dto.Response.ParticipantsResponseDto;
+import com.example.event_managment_service.Controller.Dto.Response.Participants.ParticipantsResponseDto;
 import com.example.event_managment_service.Service.ParticipantsService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.HttpStatus;

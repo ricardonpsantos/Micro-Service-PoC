@@ -35,5 +35,11 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body("Unexpected error: " + ex.getMessage());
     }
+
+    @ExceptionHandler(AlreadyExistException.class)
+    public ResponseEntity<String> alreadyExistException(Exception ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body("Unexpected error: " + ex.getMessage());
+    }
 }
 

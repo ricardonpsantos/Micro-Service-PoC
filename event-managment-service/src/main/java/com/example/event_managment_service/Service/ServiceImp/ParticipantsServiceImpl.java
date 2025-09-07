@@ -1,6 +1,6 @@
 package com.example.event_managment_service.Service.ServiceImp;
 
-import com.example.event_managment_service.Controller.Dto.Response.ParticipantsResponseDto;
+import com.example.event_managment_service.Controller.Dto.Response.Participants.ParticipantsResponseDto;
 import com.example.event_managment_service.Service.ParticipantsService;
 import com.example.event_managment_service.mapper.ParticipantsMapper;
 import com.example.event_managment_service.repository.ParticipantRepository;
@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ParticipantsServiceImpl implements ParticipantsService {

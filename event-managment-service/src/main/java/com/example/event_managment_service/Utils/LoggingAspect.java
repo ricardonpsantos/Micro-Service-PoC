@@ -1,72 +1,58 @@
-package com.example.event_managment_service.Utils;
+/*package com.example.event_managment_service.Utils;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.MDC;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
-import java.util.UUID;
+import java.util.Arrays;
 
 @Aspect
 @Component
 @RequiredArgsConstructor
 public class LoggingAspect {
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper; // injeta o do Spring
 
-    // Pointcut: apenas métodos das camadas Controller, Service e Repository
-    @Pointcut("execution(* com.example.user_managment_service.Controller..*(..)) || " +
-            "execution(* com.example.user_managment_service.Service..*(..)) || " +
-            "execution(* com.example.user_managment_service.Repository..*(..))")
-    public void appLayers() {
-    }
+    // apanha todos os controllers REST, services e repositories
+    @Pointcut("within(@org.springframework.web.bind.annotation.RestController *)")
+    public void rest() {}
+    @Pointcut("within(@org.springframework.stereotype.Controller *)")
+    public void mvc() {}
+    @Pointcut("within(@org.springframework.stereotype.Service *)")
+    public void svc() {}
+    @Pointcut("within(@org.springframework.stereotype.Repository *)")
+    public void repo() {}
 
-
-    @Before("appLayers()")
-    public void addRequestId() {
-        HttpServletRequest request =
-                ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
-
-        String requestId = request.getHeader("X-Request-Id");
-        if (requestId == null || requestId.isBlank()) {
-            requestId = UUID.randomUUID().toString();
+    @Around("rest() || mvc() || svc() || repo()")
+    public Object around(ProceedingJoinPoint pjp) throws Throwable {
+        Logger log = LoggerFactory.getLogger(pjp.getTarget().getClass());
+        String method = pjp.getSignature().toShortString();
+        log.info("▶ {} args={}", method, toJsonSafe(pjp.getArgs()));
+        Object result;
+        try {
+            result = pjp.proceed();
+        } catch (Throwable ex) {
+            log.info("✖ {} ex={}", method, ex.toString(), ex);
+            throw ex;
         }
-        MDC.put("requestId", requestId);
+        log.info("◀ {} result={}", method, toJsonSafe(result));
+        return result;
     }
 
-    @Before("appLayers()")
-    public void logMethodBefore(JoinPoint joinPoint) throws JsonProcessingException {
-        Logger logger = LoggerFactory.getLogger(joinPoint.getTarget().getClass());
-        String methodName = joinPoint.getSignature().toShortString();
-        String argsJson = objectMapper.writeValueAsString(joinPoint.getArgs());
-        logger.info("Before -> Method: {} | Args: {}", methodName, argsJson);
-    }
-
-
-    @AfterReturning(pointcut = "appLayers()", returning = "result")
-    public void logMethodAfterReturning(JoinPoint joinPoint, Object result) throws JsonProcessingException {
-        Logger logger = LoggerFactory.getLogger(joinPoint.getTarget().getClass());
-        String methodName = joinPoint.getSignature().toShortString();
-
-        String resultJson = result != null ? objectMapper.writeValueAsString(result) : "null";
-        logger.info("After Returning -> Method: {} | Returned: {}", methodName, resultJson);
-    }
-
-    @After("appLayers()")
-    public void clearMDC() {
-        MDC.remove("requestId");
+    private String toJsonSafe(Object o) {
+        if (o == null) return "null";
+        try {
+            if (o.getClass().isArray()) return Arrays.toString((Object[]) o);
+            return objectMapper.writeValueAsString(o);
+        } catch (Exception e) {
+            return "<" + o.getClass().getName() + ">";
+        }
     }
 }
 
 
-
-
-
+ */
