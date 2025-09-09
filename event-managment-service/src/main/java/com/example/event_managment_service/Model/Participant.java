@@ -17,9 +17,11 @@ import java.util.List;
 @Table(name = "participants")
 public class Participant {
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer participant_id;
+    @Column(name = "participant_id")
+    private Integer participantId;
 
     @Column(nullable = false)
     private String name;

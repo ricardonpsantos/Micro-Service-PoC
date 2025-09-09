@@ -22,6 +22,4 @@ public interface EventService {
     EventResponseDTO removeRoute(RemoveRouteRequestDto removeRouteRequestDto);
 
     EventResponseDTO changeStatusEvent(ChangeRouteStatusRequestDto changeRouteStatusRequestDto);
-
-    List<ParticipantsResponseDto> getAllParticipantsForEvent(Integer id);
 }

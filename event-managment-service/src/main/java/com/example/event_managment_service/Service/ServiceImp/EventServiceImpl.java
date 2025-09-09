@@ -94,10 +94,10 @@ public class EventServiceImpl implements EventService {
             throw new EventCancelledException("Event is cancelled!");
         }
 
-        boolean routeAlreadyExists = event.getRoutes().stream()
+        boolean routeAlreadyExistsInEvent = event.getRoutes().stream()
                 .anyMatch(route -> route.getId().equals(climbingRoute.getId()));
 
-        if (!routeAlreadyExists) {
+        if (!routeAlreadyExistsInEvent) {
             throw new IllegalArgumentException("Route not exists in this Event");
         }
 
@@ -121,13 +121,5 @@ public class EventServiceImpl implements EventService {
 
         return eventMapper.entityToResponseDto(eventRepository.save(event));
 
-    }
-
-    public List<ParticipantsResponseDto> getAllParticipantsForEvent(Integer id) {
-        Event event = eventRepository.findById(Long.valueOf(id)).orElseThrow(
-                () -> new NotFoundException("Event dont Exist")
-        );
-
-        List<ParticipantsResponseDto> listParticipantEventDto = event.get
     }
 }

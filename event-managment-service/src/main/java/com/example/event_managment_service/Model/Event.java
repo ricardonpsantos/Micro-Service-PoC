@@ -23,6 +23,7 @@ public class Event {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "event_id")
     private Integer id;
 
     @Column(nullable = false)
@@ -47,24 +48,23 @@ public class Event {
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
-            name = "event_routes",
-            joinColumns = @JoinColumn(name = "event_id"),
-            inverseJoinColumns = @JoinColumn(name = "route_id")
-    )
-
-
-    private Set<ClimbingRoute> participants = new HashSet<>();
-
-
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
             name = "event_participants",
             joinColumns = @JoinColumn(name = "event_id"),
             inverseJoinColumns = @JoinColumn(name = "participant_id")
     )
 
 
-    private Set<Participant> routes = new HashSet<>();
+    private Set<Participant> participants = new HashSet<>();
+
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "event_routes",
+            joinColumns = @JoinColumn(name = "event_id"),
+            inverseJoinColumns = @JoinColumn(name = "route_id")
+    )
+
+    private Set<ClimbingRoute> routes = new HashSet<>();
 
 
     public void addRoutetoEvent(ClimbingRoute climbingRoute) {

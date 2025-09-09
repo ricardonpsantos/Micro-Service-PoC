@@ -28,9 +28,4 @@ public class ParticipantsController {
         return new ResponseEntity<>(participantsService.getAllParticipants(), HttpStatus.OK);
     }
 
-    @Operation(summary = "Retorna todas os Participants por Evento")
-    @GetMapping("/event/{id}")
-    public ResponseEntity<List<ParticipantsResponseDto>> getParticipantsForEvent(@RequestParam Integer id) {
-        return new ResponseEntity<>(eventService.getAllParticipantsForEvent(id), HttpStatus.OK);
-    }
 }

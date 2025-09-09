@@ -17,6 +17,7 @@ public class ClimbingRoute {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "route_id")
     private Integer id;
 
     @Column(nullable = false)

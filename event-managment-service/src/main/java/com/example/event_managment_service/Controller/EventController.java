@@ -55,5 +55,4 @@ public class EventController {
         return new ResponseEntity<>(eventService.changeStatusEvent(changeRouteStatusRequestDto), HttpStatus.OK);
     }
 
-
 }
