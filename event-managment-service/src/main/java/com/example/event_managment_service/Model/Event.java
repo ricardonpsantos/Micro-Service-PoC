@@ -1,5 +1,7 @@
 package com.example.event_managment_service.Model;
 
+import com.example.event_managment_service.Controller.Dto.Response.Participants.ParticipantsResponseDto;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,8 +9,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Getter
@@ -18,7 +20,6 @@ import java.util.*;
 @Entity
 @Table(name = "events")
 public class Event {
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,10 +32,12 @@ public class Event {
     private String description;
 
     @Column(nullable = false)
-    private OffsetDateTime startDate;
 
-    @Column(nullable = false)
-    private OffsetDateTime endDate;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime startDate;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime endDate;
 
     @Column(nullable = false)
     private String location;
@@ -49,7 +52,27 @@ public class Event {
             inverseJoinColumns = @JoinColumn(name = "route_id")
     )
 
-    private Set<ClimbingRoute> routes = new HashSet<>();
 
+    private Set<ClimbingRoute> participants = new HashSet<>();
+
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "event_participants",
+            joinColumns = @JoinColumn(name = "event_id"),
+            inverseJoinColumns = @JoinColumn(name = "participant_id")
+    )
+
+
+    private Set<Participant> routes = new HashSet<>();
+
+
+    public void addRoutetoEvent(ClimbingRoute climbingRoute) {
+        this.routes.add(climbingRoute);
+    }
+
+    public void removeRouteFromEvent(ClimbingRoute climbingRoute) {
+        this.routes.remove(climbingRoute);
+    }
 
 }

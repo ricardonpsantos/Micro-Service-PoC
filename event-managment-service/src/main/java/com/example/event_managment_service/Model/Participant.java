@@ -19,7 +19,7 @@ public class Participant {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Integer participant_id;
 
     @Column(nullable = false)
     private String name;

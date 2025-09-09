@@ -1,5 +1,6 @@
 package com.example.event_managment_service.Model;
 
+import com.example.event_managment_service.Model.Embeddable.ScoreId;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,23 +17,34 @@ import java.util.Date;
 @Entity
 @Table(name = "scores")
 public class Score {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "participant_id", nullable = false)
-    private Participant participant;
+    @EmbeddedId
+    private ScoreId id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "route_id", nullable = false)
-    private ClimbingRoute route;
-
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "event_id", nullable = false)
+    @ManyToOne
+    @MapsId("idEvent")
+    @JoinColumn(name = "id_event")
     private Event event;
 
-    @Column(nullable = false)
+    @ManyToOne
+    @MapsId("participantId")
+    @JoinColumn(name = "participant_id")
+    private Participant participant;
+
+    @ManyToOne
+    @MapsId("idRoute")
+    @JoinColumn(name = "id_route")
+    private ClimbingRoute route;
+
     private Integer points;
+
+
+    public Score(Event event, Participant participant, ClimbingRoute route, Integer points) {
+        this.id = new ScoreId(event.getId(), participant.getParticipant_id(), route.getId());
+        this.event = event;
+        this.participant = participant;
+        this.route = route;
+        this.points = points;
+    }
 
 }

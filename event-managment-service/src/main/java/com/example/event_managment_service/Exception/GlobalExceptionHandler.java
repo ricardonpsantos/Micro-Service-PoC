@@ -41,5 +41,11 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT)
                 .body("Unexpected error: " + ex.getMessage());
     }
+
+    @ExceptionHandler(EventCancelledException.class)
+    public ResponseEntity<String> eventCancelledException(Exception ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(ex.getMessage());
+    }
 }
 

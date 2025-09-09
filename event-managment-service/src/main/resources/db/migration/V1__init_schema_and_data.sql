@@ -32,7 +32,7 @@ CREATE TABLE events (
     start_date      TIMESTAMP NOT NULL,
     end_date        TIMESTAMP NOT NULL,
     location        VARCHAR(255) NOT NULL,
-    status          VARCHAR(30) ,
+    status          VARCHAR(30)
     CONSTRAINT chk_events_dates CHECK (end_date > start_date)
 );
 
