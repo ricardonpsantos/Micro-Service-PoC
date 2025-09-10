@@ -74,3 +74,19 @@ CREATE TABLE notifications (
         FOREIGN KEY (event_id) REFERENCES events(event_id)
         ON DELETE CASCADE ON UPDATE CASCADE
 );
+
+CREATE TABLE event_participants (
+    event_id INT NOT NULL,
+    participant_id INT NOT NULL,
+    date_joined TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, -- opcional
+
+    CONSTRAINT pk_event_participants PRIMARY KEY (event_id, participant_id),
+
+    CONSTRAINT fk_event_participants_event
+        FOREIGN KEY (event_id) REFERENCES events(event_id)
+        ON DELETE CASCADE ON UPDATE CASCADE,
+
+    CONSTRAINT fk_event_participants_participant
+        FOREIGN KEY (participant_id) REFERENCES participants(participant_id)
+        ON DELETE CASCADE ON UPDATE CASCADE
+);

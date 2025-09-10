@@ -10,3 +10,4 @@ public interface CategoryMapper {
     CategoryResponseDto categoryEntityToResponseDTO (Category category);
     Category categoryRequestToEntity (CategoryRequestDto categoryRequestDto);
 }
+

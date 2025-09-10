@@ -11,11 +11,14 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "scores")
+@Entity
 public class Score {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id; // ID único do score
+    @Column(name = "id")
+    private Integer id_score;
 
     @ManyToOne
     @JoinColumn(name = "event_id", nullable = false)
