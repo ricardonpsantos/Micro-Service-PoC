@@ -18,7 +18,7 @@ public class Score {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Integer id_score;
+    private Integer idScore;
 
     @ManyToOne
     @JoinColumn(name = "event_id", nullable = false)

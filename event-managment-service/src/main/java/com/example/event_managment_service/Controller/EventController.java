@@ -6,23 +6,30 @@ import com.example.event_managment_service.Controller.Dto.Request.Event.ChangeRo
 import com.example.event_managment_service.Controller.Dto.Request.Event.EventRequestDTO;
 import com.example.event_managment_service.Controller.Dto.Request.Event.RemoveRouteRequestDto;
 import com.example.event_managment_service.Controller.Dto.Response.Event.EventResponseDTO;
+import com.example.event_managment_service.Controller.Dto.Response.ResultOfEvents.ResultofEventsDto;
+import com.example.event_managment_service.Model.Participant;
 import com.example.event_managment_service.Service.EventService;
 
+import com.example.event_managment_service.Service.ResultsOfEventsService;
+import com.example.event_managment_service.repository.ResultOfEventsRepository;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/events")
 public class EventController {
 
     private final EventService eventService;
+    private final ResultsOfEventsService resultsOfEventsService;
 
-    public EventController(EventService eventService) {
+    public EventController(EventService eventService, ResultsOfEventsService resultsOfEventsService) {
         this.eventService = eventService;
+        this.resultsOfEventsService = resultsOfEventsService;
     }
 
     @GetMapping("/all")
@@ -36,23 +43,28 @@ public class EventController {
     }
 
     @PostMapping("/new")
-    public ResponseEntity<EventResponseDTO> createEvent( @Valid @RequestBody EventRequestDTO eventRequestDTO ) {
+    public ResponseEntity<EventResponseDTO> createEvent(@Valid @RequestBody EventRequestDTO eventRequestDTO) {
         return new ResponseEntity<>(eventService.createEvent(eventRequestDTO), HttpStatus.OK);
     }
 
     @PostMapping("/add-route")
-    public ResponseEntity<EventResponseDTO> addRoute( @Valid @RequestBody AddRouteRequestDto addRouteRequestDto ) {
+    public ResponseEntity<EventResponseDTO> addRoute(@Valid @RequestBody AddRouteRequestDto addRouteRequestDto) {
         return new ResponseEntity<>(eventService.addRoute(addRouteRequestDto), HttpStatus.OK);
     }
 
     @DeleteMapping("/remove-route")
-    public ResponseEntity<EventResponseDTO> removeRoute( @Valid @RequestBody RemoveRouteRequestDto removeRouteRequestDto ) {
+    public ResponseEntity<EventResponseDTO> removeRoute(@Valid @RequestBody RemoveRouteRequestDto removeRouteRequestDto) {
         return new ResponseEntity<>(eventService.removeRoute(removeRouteRequestDto), HttpStatus.OK);
     }
 
     @PutMapping("/change-status")
-    public ResponseEntity<EventResponseDTO> changeStatusEvent( @Valid @RequestBody ChangeRouteStatusRequestDto changeRouteStatusRequestDto ) {
+    public ResponseEntity<EventResponseDTO> changeStatusEvent(@Valid @RequestBody ChangeRouteStatusRequestDto changeRouteStatusRequestDto) {
         return new ResponseEntity<>(eventService.changeStatusEvent(changeRouteStatusRequestDto), HttpStatus.OK);
     }
 
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/end/{id}")
+    public ResultofEventsDto closeEventAndSumarizeWinner(@RequestParam Integer id) {
+        return resultsOfEventsService.closeEventAndSumarizeWinner(id);
+    }
 }

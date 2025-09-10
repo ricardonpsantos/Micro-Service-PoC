@@ -5,11 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
-public class CategoryResponseDto {
-    private Integer categoryId;
-    private String categoryName;
+public record CategoryResponseDto(Integer categoryId,
+                                  String categoryName) {
 }

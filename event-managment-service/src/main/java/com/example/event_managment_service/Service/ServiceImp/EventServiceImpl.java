@@ -5,7 +5,6 @@ import com.example.event_managment_service.Controller.Dto.Request.Event.ChangeRo
 import com.example.event_managment_service.Controller.Dto.Request.Event.EventRequestDTO;
 import com.example.event_managment_service.Controller.Dto.Request.Event.RemoveRouteRequestDto;
 import com.example.event_managment_service.Controller.Dto.Response.Event.EventResponseDTO;
-import com.example.event_managment_service.Controller.Dto.Response.Participants.ParticipantsResponseDto;
 import com.example.event_managment_service.Exception.EventCancelledException;
 import com.example.event_managment_service.Exception.NotFoundException;
 import com.example.event_managment_service.Model.ClimbingRoute;
@@ -15,11 +14,11 @@ import com.example.event_managment_service.Service.EventService;
 import com.example.event_managment_service.mapper.EventMapper;
 import com.example.event_managment_service.repository.ClimbingRouteRepository;
 import com.example.event_managment_service.repository.EventRepository;
+import com.example.event_managment_service.repository.ResultOfEventsRepository;
+import com.example.event_managment_service.repository.ScoresRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.util.RouteMatcher;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class EventServiceImpl implements EventService {
@@ -57,10 +56,10 @@ public class EventServiceImpl implements EventService {
     }
 
     public EventResponseDTO addRoute(AddRouteRequestDto addRouteRequestDto) {
-        ClimbingRoute climbingRoute = climbingRouteRepository.findById(Long.valueOf(addRouteRequestDto.getIdRoutes()))
+        ClimbingRoute climbingRoute = climbingRouteRepository.findById(Long.valueOf(addRouteRequestDto.idRoutes()))
                 .orElseThrow(() -> new NotFoundException("This Climbing Route does not exist!"));
 
-        Event event = eventRepository.findById(Long.valueOf(addRouteRequestDto.getIdEvent()))
+        Event event = eventRepository.findById(Long.valueOf(addRouteRequestDto.idEvent()))
                 .orElseThrow(() -> new NotFoundException("This Event does not exist!"));
 
         if (!event.getStatus().isAllowChanges()) {
@@ -84,10 +83,10 @@ public class EventServiceImpl implements EventService {
     @Override
     public EventResponseDTO removeRoute(RemoveRouteRequestDto removeRouteRequestDto) {
 
-        ClimbingRoute climbingRoute = climbingRouteRepository.findById(Long.valueOf(removeRouteRequestDto.getIdRoutes()))
+        ClimbingRoute climbingRoute = climbingRouteRepository.findById(Long.valueOf(removeRouteRequestDto.idRoutes()))
                 .orElseThrow(() -> new NotFoundException("This Climbing Route does not exist!"));
 
-        Event event = eventRepository.findById(Long.valueOf(removeRouteRequestDto.getIdEvent()))
+        Event event = eventRepository.findById(Long.valueOf(removeRouteRequestDto.idEvent()))
                 .orElseThrow(() -> new NotFoundException("This Event does not exist!"));
 
         if (!event.getStatus().isAllowChanges()) {
@@ -111,15 +110,16 @@ public class EventServiceImpl implements EventService {
 
     public EventResponseDTO changeStatusEvent(ChangeRouteStatusRequestDto changeRouteStatusRequestDto) {
 
-        Event event = eventRepository.findById(Long.valueOf(changeRouteStatusRequestDto.getIdEvent()))
+        Event event = eventRepository.findById(Long.valueOf(changeRouteStatusRequestDto.idEvent()))
                 .orElseThrow(() -> new NotFoundException("This Event does not exist!"));
 
         if (!event.getStatus().isAllowChanges()) {
             throw new EventCancelledException("Event is cancelled!");
         }
-        event.setStatus(EventStatus.fromIdentifyPermission(changeRouteStatusRequestDto.getIdChange()));
+        event.setStatus(EventStatus.fromIdentifyPermission(changeRouteStatusRequestDto.idChange()));
 
         return eventMapper.entityToResponseDto(eventRepository.save(event));
 
     }
+
 }

@@ -6,14 +6,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
-public class ChangeRouteStatusRequestDto {
+public record ChangeRouteStatusRequestDto(
+        @NotNull(message = "idEvent must be Fill")
+        Integer idEvent,
+        @NotNull(message = "idChange must be fill")
+        Integer idChange
+) {
 
-    @NotNull(message = "idEvent must be Fill")
-    private Integer idEvent;
-    @NotNull(message = "idChange must be fill")
-    private Integer idChange;
 }

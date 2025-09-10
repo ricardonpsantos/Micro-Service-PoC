@@ -3,7 +3,7 @@ package com.example.event_managment_service.Service.ServiceImp;
 import com.example.event_managment_service.Controller.Dto.Response.ClimbingRoutes.RouteDto;
 import com.example.event_managment_service.Controller.Dto.Response.Event.EventDto;
 import com.example.event_managment_service.Controller.Dto.Response.Participants.ParticipantDto;
-import com.example.event_managment_service.Controller.Dto.Response.Score.ScoreResponseIdsAndNamesDto;
+import com.example.event_managment_service.Controller.Dto.Response.Score.ScoreResponseOnlyIdsDto;
 import com.example.event_managment_service.Model.Score;
 import com.example.event_managment_service.Service.ScoresService;
 import com.example.event_managment_service.mapper.ScoreMapper;
@@ -24,36 +24,27 @@ public class ScoresServiceImpl implements ScoresService {
         this.scoreMapper = scoreMapper;
     }
 
- // public List<ScoreResponseIdsAndNamesDto> getAllScores() {
- //     List<ScoreResponseIdsAndNamesDto> scoreResponseDtoList = scoresRepository.findAll()
- //             .stream()
- //             .map(scoreMapper::entityToResponseDto)
- //             .toList();
-
- //     return scoreResponseDtoList;
- // }
-
-    public Map<String, Map<String, List<ScoreResponseIdsAndNamesDto>>> getAllScoresGrouped() {
-        List<ScoreResponseIdsAndNamesDto> scoreResponseDtoList = scoresRepository.findAll()
+    public Map<String, Map<String, List<ScoreResponseOnlyIdsDto>>> getAllScoresGrouped() {
+        List<ScoreResponseOnlyIdsDto> scoreResponseDtoList = scoresRepository.findAll()
                 .stream().map(scoreMapper::entityToResponseDto)
                 .toList();
 
         return scoreResponseDtoList.stream()
                 .collect(Collectors.groupingBy(
-                        ScoreResponseIdsAndNamesDto::getEvent_name, // agrupa por evento
-                        Collectors.groupingBy(ScoreResponseIdsAndNamesDto::getRoute_name) // agrupa por participante
+                        ScoreResponseOnlyIdsDto::eventName, // agrupa por evento
+                        Collectors.groupingBy(ScoreResponseOnlyIdsDto::routeName) // agrupa por participante
                 ));
     }
 
-    public Map<String, Map<String, List<ScoreResponseIdsAndNamesDto>>> getAllScoresForeEventId(Integer id) {
-        List<ScoreResponseIdsAndNamesDto> scoreResponseDtoList = scoresRepository.findByEvent_Id(id)
+    public Map<String, Map<String, List<ScoreResponseOnlyIdsDto>>> getAllScoresForeEventId(Integer id) {
+        List<ScoreResponseOnlyIdsDto> scoreResponseDtoList = scoresRepository.findByEvent_Id(id)
                 .stream().map(scoreMapper::entityToResponseDto)
                 .toList();
 
         return scoreResponseDtoList.stream()
                 .collect(Collectors.groupingBy(
-                        ScoreResponseIdsAndNamesDto::getEvent_name, // agrupa por evento
-                        Collectors.groupingBy(ScoreResponseIdsAndNamesDto::getRoute_name) // agrupa por participante
+                        ScoreResponseOnlyIdsDto::eventName, // agrupa por evento
+                        Collectors.groupingBy(ScoreResponseOnlyIdsDto::routeName) // agrupa por participante
                 ));
     }
 

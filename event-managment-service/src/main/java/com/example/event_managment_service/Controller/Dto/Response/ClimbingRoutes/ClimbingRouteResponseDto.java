@@ -9,14 +9,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
-public class ClimbingRouteResponseDto {
-    private Integer id;
-    private String name;
-    private CategoryResponseDto categoryResponseDto;
-    private DifficultyLevel difficultyLevel;
-    private Integer routeHeight;
+public record ClimbingRouteResponseDto(Integer id,
+                                       String name,
+                                       CategoryResponseDto categoryResponseDto,
+                                       DifficultyLevel difficultyLevel,
+                                       Integer routeHeight) {
 }

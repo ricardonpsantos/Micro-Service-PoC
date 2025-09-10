@@ -6,15 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
-public class RemoveRouteRequestDto {
-
-    @NotNull(message = "idEvent must be Fill")
-    private Integer idEvent;
-    @NotNull(message = "idRoutes must be Fill")
-    private Integer idRoutes;
-
+public record RemoveRouteRequestDto(
+        @NotNull(message = "idEvent must be Fill")
+        Integer idEvent,
+        @NotNull(message = "idRoutes must be Fill")
+        Integer idRoutes) {
 }

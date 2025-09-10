@@ -2,7 +2,7 @@ package com.example.event_managment_service.Controller;
 
 
 import com.example.event_managment_service.Controller.Dto.Response.Event.EventDto;
-import com.example.event_managment_service.Controller.Dto.Response.Score.ScoreResponseIdsAndNamesDto;
+import com.example.event_managment_service.Controller.Dto.Response.Score.ScoreResponseOnlyIdsDto;
 import com.example.event_managment_service.Service.ScoresService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -22,13 +22,13 @@ public class ScoreController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/all")
-    public Map<String, Map<String, List<ScoreResponseIdsAndNamesDto>>> getAllScores(){
+    public Map<String, Map<String, List<ScoreResponseOnlyIdsDto>>> getAllScores(){
         return scoresService.getAllScoresGrouped();
     }
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/event/{id}")
-    public Map<String, Map<String, List<ScoreResponseIdsAndNamesDto>>> getAllScoresForeEventId(@RequestParam Integer id){
+    public Map<String, Map<String, List<ScoreResponseOnlyIdsDto>>> getAllScoresForeEventId(@RequestParam Integer id){
         return scoresService.getAllScoresForeEventId(id);
     }
 
@@ -37,4 +37,6 @@ public class ScoreController {
     public List<EventDto> groupWell(@RequestParam Integer id){
         return scoresService.getScoresGrouped(id);
     }
+
+
 }

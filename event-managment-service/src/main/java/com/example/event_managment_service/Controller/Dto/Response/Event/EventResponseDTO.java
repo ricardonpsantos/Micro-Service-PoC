@@ -14,18 +14,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
-public class EventResponseDTO {
-
-    private Integer id;
-    private String name;
-    private String description;
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
-    private String location;
-    private EventStatus status;
-    private Set<ClimbingRouteResponseDto> climbingRouteResponseDtos;
+public record EventResponseDTO(Integer id,
+                               String name,
+                               String description,
+                               LocalDateTime startDate,
+                               LocalDateTime endDate,
+                               String location,
+                               EventStatus status,
+                               Set<ClimbingRouteResponseDto> climbingRouteResponseDtos) {
 }

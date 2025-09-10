@@ -90,3 +90,16 @@ CREATE TABLE event_participants (
         FOREIGN KEY (participant_id) REFERENCES participants(participant_id)
         ON DELETE CASCADE ON UPDATE CASCADE
 );
+
+CREATE TABLE results (
+    id_results SERIAL PRIMARY KEY,
+    participant_id INT NOT NULL,
+    event_id INT NOT NULL,
+    result_points INT NOT NULL,
+    CONSTRAINT fk_winner_participant
+        FOREIGN KEY (participant_id) REFERENCES participants(participant_id)
+        ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT fk_winner_event
+        FOREIGN KEY (event_id) REFERENCES events(event_id)
+        ON DELETE CASCADE ON UPDATE CASCADE
+);
