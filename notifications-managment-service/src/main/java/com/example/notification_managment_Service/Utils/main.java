@@ -1,0 +1,7 @@
+package com.example.notification_managment_Service.Utils;
+
+public class main {
+    public static void main(String[] args) {
+        System.out.println("TESTE");
+    }
+}
