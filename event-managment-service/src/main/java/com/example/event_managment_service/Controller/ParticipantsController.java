@@ -22,6 +22,7 @@ public class ParticipantsController {
         this.eventService = eventService;
     }
 
+    @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Retorna todas os Participants")
     @GetMapping("/all")
     public ResponseEntity<List<ParticipantsResponseDto>> getAllParticipants() {

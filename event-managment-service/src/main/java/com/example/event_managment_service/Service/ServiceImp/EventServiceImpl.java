@@ -62,11 +62,11 @@ public class EventServiceImpl implements EventService {
         Event event = eventRepository.findById(Long.valueOf(addRouteRequestDto.idEvent()))
                 .orElseThrow(() -> new NotFoundException("This Event does not exist!"));
 
-        if (!event.getStatus().isAllowChanges()) {
+        if (!event.getEventStatus().isAllowChanges()) {
             throw new EventCancelledException("Event is cancelled!");
         }
         boolean routeAlreadyExists = event.getRoutes().stream()
-                .anyMatch(route -> route.getId().equals(climbingRoute.getId()));
+                .anyMatch(route -> route.getIdRoute().equals(climbingRoute.getIdRoute()));
 
         if (routeAlreadyExists) {
             throw new IllegalArgumentException("Route already exists in this Event");
@@ -89,12 +89,12 @@ public class EventServiceImpl implements EventService {
         Event event = eventRepository.findById(Long.valueOf(removeRouteRequestDto.idEvent()))
                 .orElseThrow(() -> new NotFoundException("This Event does not exist!"));
 
-        if (!event.getStatus().isAllowChanges()) {
+        if (!event.getEventStatus().isAllowChanges()) {
             throw new EventCancelledException("Event is cancelled!");
         }
 
         boolean routeAlreadyExistsInEvent = event.getRoutes().stream()
-                .anyMatch(route -> route.getId().equals(climbingRoute.getId()));
+                .anyMatch(route -> route.getIdRoute().equals(climbingRoute.getIdRoute()));
 
         if (!routeAlreadyExistsInEvent) {
             throw new IllegalArgumentException("Route not exists in this Event");
@@ -113,10 +113,10 @@ public class EventServiceImpl implements EventService {
         Event event = eventRepository.findById(Long.valueOf(changeRouteStatusRequestDto.idEvent()))
                 .orElseThrow(() -> new NotFoundException("This Event does not exist!"));
 
-        if (!event.getStatus().isAllowChanges()) {
+        if (!event.getEventStatus().isAllowChanges()) {
             throw new EventCancelledException("Event is cancelled!");
         }
-        event.setStatus(EventStatus.fromIdentifyPermission(changeRouteStatusRequestDto.idChange()));
+        event.setEventStatus(EventStatus.fromIdentifyPermission(changeRouteStatusRequestDto.idChange()));
 
         return eventMapper.entityToResponseDto(eventRepository.save(event));
 

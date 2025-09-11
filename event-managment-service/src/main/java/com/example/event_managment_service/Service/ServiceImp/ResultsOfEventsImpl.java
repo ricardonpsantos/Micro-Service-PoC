@@ -38,7 +38,7 @@ public class ResultsOfEventsImpl implements ResultsOfEventsService {
         Event event = eventRepository.findById(Long.valueOf(id))
                 .orElseThrow(() -> new NotFoundException("Event Not Exist"));
 
-        List<Score> scores = scoresRepository.findByEvent_Id(id);
+        List<Score> scores = scoresRepository.findByEvent_IdEvent(id);
 
         Map<Participant, Integer> totalPointsByParticipant = scores.stream()
                 .collect(Collectors.groupingBy(
@@ -53,10 +53,10 @@ public class ResultsOfEventsImpl implements ResultsOfEventsService {
             listParticipantDto.add(new ParticipantDto(participant.getParticipantId(), participant.getName(), points));
         });
 
-        event.setStatus(EventStatus.COMPLETED);
+        event.setEventStatus(EventStatus.COMPLETED);
         eventRepository.save(event);
 
-        return new ResultofEventsDto(event.getName(),event.getStatus().name(), listParticipantDto
+        return new ResultofEventsDto(event.getEventName(),event.getEventStatus().name(), listParticipantDto
                 .stream()
                 .sorted(Comparator.reverseOrder())
                 .collect(Collectors.toList()));
@@ -67,7 +67,7 @@ public class ResultsOfEventsImpl implements ResultsOfEventsService {
         Event event = eventRepository.findById(Long.valueOf(id))
                 .orElseThrow(() -> new NotFoundException("Event Not Exist"));
 
-        List<Score> scores = scoresRepository.findByEvent_Id(id);
+        List<Score> scores = scoresRepository.findByEvent_IdEvent(id);
 
 
         Map<Participant, Integer> totalPointsByParticipant = scores.stream()
@@ -82,7 +82,7 @@ public class ResultsOfEventsImpl implements ResultsOfEventsService {
             listParticipantDto.add(new ParticipantDto(participant.getParticipantId(), participant.getName(), points));
         });
 
-        return new ResultofEventsDto(event.getName(),event.getStatus().name(), listParticipantDto
+        return new ResultofEventsDto(event.getEventName(),event.getEventStatus().name(), listParticipantDto
                 .stream()
                 .sorted(Comparator.reverseOrder())
                 .collect(Collectors.toList()));

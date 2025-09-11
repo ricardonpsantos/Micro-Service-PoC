@@ -10,11 +10,11 @@ import org.mapstruct.Mapping;
 public interface ScoreMapper {
 
     @Mapping(target = "idScore", source = "idScore")
-    @Mapping(target = "idEvent", source = "event.id")
+    @Mapping(target = "idEvent", source = "event.idEvent")
     @Mapping(target = "idParticipant", source = "participant.participantId")
-    @Mapping(target = "idRoute", source = "route.id")
+    @Mapping(target = "idRoute", source = "route.idRoute")
     @Mapping(target = "points", source = "points")
-    @Mapping(target = "eventName", source = "event.name")
+    @Mapping(target = "eventName", source = "event.eventName")
     @Mapping(target = "participantName", source = "participant.name")
     @Mapping(target = "routeName", source = "route.name")
     ScoreResponseOnlyIdsDto entityToResponseDto(Score score);

@@ -16,59 +16,19 @@ import java.time.LocalDateTime;
 public class EventRequestDTO {
 
     @NotNull(message = "Name cannot be null")
-    private String name;
+    private String eventName;
 
-    @NotNull(message = "description description cannot be null")
-    private String description;
+    @NotNull(message = "description cannot be null")
+    private String eventDescription;
 
-    //@NotNull(message = "Event start date cannot be null")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime startDate;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime endDate;
 
-    //@Size(message = "location name must be between 3 and 50 characters", min = 3, max = 50)
-    @NotNull(message = "location location cannot be null")
-    private String location;
+    @NotNull(message = "location cannot be null")
 
-    public String getName() {
-        return name;
-    }
+    private String eventLocation;
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public LocalDateTime getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(LocalDateTime startDate) {
-        this.startDate = startDate;
-    }
-
-    public LocalDateTime getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(LocalDateTime endDate) {
-        this.endDate = endDate;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
 }

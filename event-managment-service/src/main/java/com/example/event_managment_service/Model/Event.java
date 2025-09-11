@@ -24,13 +24,13 @@ public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "event_id")
-    private Integer id;
+    private Integer idEvent;
 
-    @Column(nullable = false)
-    private String name;
+    @Column(name = "name", nullable = false)
+    private String eventName;
 
-    @Column(nullable = false, length = 2000)
-    private String description;
+    @Column(name = "description",nullable = false, length = 2000)
+    private String eventDescription;
 
     @Column(nullable = false)
 
@@ -40,11 +40,12 @@ public class Event {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime endDate;
 
-    @Column(nullable = false)
-    private String location;
+    @Column(name = "location",nullable = false)
+    private String eventLocation;
 
+    @Column(name = "status")
     @Enumerated(EnumType.STRING)
-    private EventStatus status = EventStatus.PLANNED;
+    private EventStatus eventStatus = EventStatus.PLANNED;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(

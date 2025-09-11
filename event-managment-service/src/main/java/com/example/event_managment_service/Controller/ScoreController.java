@@ -38,5 +38,4 @@ public class ScoreController {
         return scoresService.getScoresGrouped(id);
     }
 
-
 }

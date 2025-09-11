@@ -9,5 +9,5 @@ import java.util.Optional;
 
 @Repository
 public interface ScoresRepository extends JpaRepository<Score,Long> {
-    List<Score> findByEvent_Id(Integer eventId);
+    List<Score> findByEvent_IdEvent(Integer eventId);
 }

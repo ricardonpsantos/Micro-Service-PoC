@@ -18,7 +18,7 @@ public class ClimbingRoute {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "route_id")
-    private Integer id;
+    private Integer idRoute;
 
     @Column(nullable = false)
     private String name;
@@ -32,7 +32,6 @@ public class ClimbingRoute {
     @Column(nullable = false)
     private DifficultyLevel difficultyLevel;
 
-    // altura em metros; se preferires, usa BigDecimal
     @Column(nullable = false)
     private Integer routeHeight;
 

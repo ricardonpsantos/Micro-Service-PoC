@@ -14,12 +14,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 
-public record EventResponseDTO(Integer id,
-                               String name,
-                               String description,
+public record EventResponseDTO(Integer idEvent,
+                               String eventName,
+                               String eventDescription,
                                LocalDateTime startDate,
                                LocalDateTime endDate,
-                               String location,
-                               EventStatus status,
+                               String eventLocation,
+                               EventStatus eventStatus,
                                Set<ClimbingRouteResponseDto> climbingRouteResponseDtos) {
 }

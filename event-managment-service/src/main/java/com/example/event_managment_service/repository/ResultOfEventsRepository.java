@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface ResultOfEventsRepository extends JpaRepository<ResultsOfEvents,Long> {
-    List<ResultsOfEvents> findByEvent_id(Integer id);
+    List<ResultsOfEvents> findByEvent_idEvent(Integer id);
 }

@@ -20,19 +20,21 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/all")
-    public ResponseEntity<List<CategoryResponseDto>> getAllCategories() {
-        return new ResponseEntity<>(categoryService.getAllCategories(), HttpStatus.OK);
+    public List<CategoryResponseDto> getAllCategories() {
+        return categoryService.getAllCategories();
     }
 
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/new")
-    public ResponseEntity<CategoryResponseDto> createCategory(@Valid @RequestBody CategoryRequestDto categoryRequestDto) {
-        return new ResponseEntity<>(categoryService.createCategory(categoryRequestDto), HttpStatus.CREATED);
+    public CategoryResponseDto createCategory(@Valid @RequestBody CategoryRequestDto categoryRequestDto) {
+        return categoryService.createCategory(categoryRequestDto);
     }
 
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{id}")
-    public ResponseEntity<CategoryResponseDto> getCategoryById(@Valid @RequestParam Integer id) {
-        return new ResponseEntity<>(categoryService.getCategoryById(id), HttpStatus.OK);
+    public CategoryResponseDto  getCategoryById(@Valid @RequestParam Integer id) {
+        return categoryService.getCategoryById(id);
     }
-
 }

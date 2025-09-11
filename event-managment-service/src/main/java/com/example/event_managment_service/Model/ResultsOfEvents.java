@@ -18,14 +18,14 @@ public class ResultsOfEvents {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_results")
-    private Integer id_results;
+    private Integer idResults;
 
     @ManyToOne
-    @JoinColumn(name = "participant_id", nullable = false)
+    @JoinColumn(name = "participantId", nullable = false)
     private Participant participant;
 
     @ManyToOne
-    @JoinColumn(name = "event_id", nullable = false)
+    @JoinColumn(name = "idEvent", nullable = false)
     private Event event;
 
     @Column(name = "result_points")

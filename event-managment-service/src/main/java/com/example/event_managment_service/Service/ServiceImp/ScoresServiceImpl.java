@@ -37,7 +37,7 @@ public class ScoresServiceImpl implements ScoresService {
     }
 
     public Map<String, Map<String, List<ScoreResponseOnlyIdsDto>>> getAllScoresForeEventId(Integer id) {
-        List<ScoreResponseOnlyIdsDto> scoreResponseDtoList = scoresRepository.findByEvent_Id(id)
+        List<ScoreResponseOnlyIdsDto> scoreResponseDtoList = scoresRepository.findByEvent_IdEvent(id)
                 .stream().map(scoreMapper::entityToResponseDto)
                 .toList();
 
@@ -49,11 +49,11 @@ public class ScoresServiceImpl implements ScoresService {
     }
 
     public List<EventDto> getScoresGrouped(Integer id) {
-        List<Score> scores = scoresRepository.findByEvent_Id(id);
+        List<Score> scores = scoresRepository.findByEvent_IdEvent(id);
 
         Map<String, Map<String, List<Score>>> grouped =
                 scores.stream().collect(Collectors.groupingBy(
-                        s -> s.getEvent().getName(),                 // agrupa por evento
+                        s -> s.getEvent().getEventName(),                 // agrupa por evento
                         Collectors.groupingBy(s -> s.getRoute().getName()) // agrupa por rota
                 ));
 
