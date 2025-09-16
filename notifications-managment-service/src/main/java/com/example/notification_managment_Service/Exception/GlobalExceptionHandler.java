@@ -19,4 +19,33 @@ public class GlobalExceptionHandler {
                 .orElse("Dados inválidos");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(message);
     }
+
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<String> handleUserNotFound(NotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(InvalidDataException.class)
+    public ResponseEntity<String> handleUserNotFound(InvalidDataException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<String> handleOtherExceptions(Exception ex) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body("Unexpected error: " + ex.getMessage());
+    }
+
+    @ExceptionHandler(AlreadyExistException.class)
+    public ResponseEntity<String> alreadyExistException(Exception ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body("Unexpected error: " + ex.getMessage());
+    }
+
+    @ExceptionHandler(EventCancelledException.class)
+    public ResponseEntity<String> eventCancelledException(Exception ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(ex.getMessage());
+    }
 }
+

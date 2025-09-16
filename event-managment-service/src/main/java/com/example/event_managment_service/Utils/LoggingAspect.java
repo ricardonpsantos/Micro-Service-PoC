@@ -36,7 +36,7 @@ public class LoggingAspect {
         try {
             result = pjp.proceed();
         } catch (Throwable ex) {
-            log.info("✖ {} ex={}", method, ex.toString(), ex);
+            log.info("✖ {} ex={}", m    ethod, ex.toString(), ex);
             throw ex;
         }
         log.info("◀ {} result={}", method, toJsonSafe(result));
