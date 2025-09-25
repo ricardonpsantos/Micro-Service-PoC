@@ -25,4 +25,8 @@ public class EventLog {
     private String payload;
     private LocalDateTime processDate;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "notifications_id", referencedColumnName = "notification_id")
+    private Notifications notifications;
+
 }

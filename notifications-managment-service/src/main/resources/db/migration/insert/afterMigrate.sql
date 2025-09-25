@@ -20,3 +20,9 @@ VALUES
 (18, 'PUSH', 'Convite', 'Você foi convidado para um grupo.', 'PENDING', DATEADD('DAY', -3, CURRENT_TIMESTAMP), NULL),
 (19, 'EMAIL', 'Alerta', 'Atividade suspeita detectada.', 'PENDING', DATEADD('DAY', -2, CURRENT_TIMESTAMP), NULL),
 (20, 'PUSH', 'Evento Hoje', 'O evento começa hoje às 18h.', 'PENDING', DATEADD('DAY', -1, CURRENT_TIMESTAMP), NULL);
+
+INSERT INTO event_log (event_method, payload, process_date, notifications_id)
+VALUES
+('POST', '{"info":"criação de utilizador"}', CURRENT_TIMESTAMP, 1),
+('GET', '{"info":"consulta de eventos"}', CURRENT_TIMESTAMP, 2),
+('DELETE', '{"info":"remoção de inscrição"}', CURRENT_TIMESTAMP, 3);

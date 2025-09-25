@@ -41,4 +41,5 @@ public class Notifications {
     @Column (name = "notification_sent")
     private LocalDateTime notificationSent;
 
+
 }
