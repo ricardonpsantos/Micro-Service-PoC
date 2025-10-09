@@ -8,11 +8,12 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface NotificationRepository extends JpaRepository<Notifications, Long> {
-    List<Notifications> findNotificationsByUserId(Long id);
+public interface NotificationRepository extends JpaRepository<Notifications, Integer> {
+    List<Notifications> findNotificationsByUserId(Integer id);
 
     @Query(
             value = "SELECT * FROM notification WHERE notification_status = 'PENDING' ORDER BY notification_date ASC LIMIT :limit",
             nativeQuery = true)
     List<Notifications> findOldestNotifications(@Param("limit") int limit);
+
 }

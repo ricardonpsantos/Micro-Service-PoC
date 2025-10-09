@@ -9,9 +9,6 @@ public record RequestNotificationDto(
         NotificationType notificationType,
         String title,
         String message
-        //NotificationStatus notificationStatus
-        //LocalDateTime notificationCreate,
-        //LocalDateTime notificationSent
 ) {
 }
 

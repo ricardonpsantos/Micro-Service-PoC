@@ -2,7 +2,6 @@ package com.example.notification_managment_Service.Service.ServiceImp;
 
 import com.example.notification_managment_Service.Model.EventLog;
 import com.example.notification_managment_Service.Service.EventLogService;
-import com.example.notification_managment_Service.repository.EventLogRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

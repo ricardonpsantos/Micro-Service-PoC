@@ -24,3 +24,9 @@ flyway:
 logging:
   level:
     org.flywaydb: debug
+
+
+variables:
+  min-check-duplicate : 30
+  time-schedule: 10
+  max-attemps-send-email: 5

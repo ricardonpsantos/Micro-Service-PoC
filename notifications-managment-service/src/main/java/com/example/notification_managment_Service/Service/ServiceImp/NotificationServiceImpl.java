@@ -1,9 +1,13 @@
 package com.example.notification_managment_Service.Service.ServiceImp;
-
+import com.example.notification_managment_Service.Exception.AlreadyExistException;
+import com.example.notification_managment_Service.Model.NotificationMessage;
+import com.example.notification_managment_Service.Model.NotificationStatus;
+import com.example.notification_managment_Service.Model.NotificationsQueue;
+import com.example.notification_managment_Service.repository.NotificationsQueueRepository;
+import org.springframework.beans.factory.annotation.Value;
+import com.example.notification_managment_Service.Controller.Dto.Notification.StatusNotificationDto;
 import com.example.notification_managment_Service.Controller.Dto.Notification.RequestNotificationDto;
 import com.example.notification_managment_Service.Controller.Dto.Notification.ResponseNotificationDto;
-import com.example.notification_managment_Service.Exception.NotFoundException;
-import com.example.notification_managment_Service.Model.NotificationStatus;
 import com.example.notification_managment_Service.Model.Notifications;
 import com.example.notification_managment_Service.Service.NotificationService;
 import com.example.notification_managment_Service.mapper.NotificationMapper;
@@ -11,18 +15,22 @@ import com.example.notification_managment_Service.repository.NotificationReposit
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.time.Duration;
 import java.util.List;
 
 @Service
 public class NotificationServiceImpl implements NotificationService {
     private final NotificationRepository notificationRepository;
+    private final NotificationsQueueRepository notificationsQueueRepository;
     private final NotificationMapper notificationMapper;
 
+    @Value("${variables.min-check-duplicate}")
+    private Integer days;
 
-    public NotificationServiceImpl(NotificationRepository notificationRepository, NotificationMapper notificationMapper) {
+
+    public NotificationServiceImpl(NotificationRepository notificationRepository, NotificationsQueueRepository notificationsQueueRepository, NotificationMapper notificationMapper) {
         this.notificationRepository = notificationRepository;
+        this.notificationsQueueRepository = notificationsQueueRepository;
         this.notificationMapper = notificationMapper;
     }
 
@@ -31,51 +39,54 @@ public class NotificationServiceImpl implements NotificationService {
         return notificationRepository.findAll()
                 .stream()
                 .filter(s -> s.getIdNotification() != null)
-                .map(notificationMapper::entityToDto)
-                .toList();
-    }
-
-    public ResponseNotificationDto getNotificationById(Integer id) {
-        return notificationRepository.findById(Long.valueOf(id))
-                .map(notificationMapper::entityToDto)
-                .orElseThrow(() -> new NotFoundException("Notification :" + id + " Not Found"));
-    }
-
-    public List<ResponseNotificationDto> getNotificationByUserId(Integer id) {
-        List<Notifications> notifications = notificationRepository.findNotificationsByUserId(Long.valueOf(id));
-
-        if (notifications.isEmpty()) {
-            throw new NotFoundException("No notifications found for userId: " + id);
-        }
-
-        return notifications.stream()
-                .map(notificationMapper::entityToDto)
+                .map(notificationMapper::entityToDtoResponse)
                 .toList();
     }
 
     @Transactional
-    public ResponseNotificationDto createNewNotification(RequestNotificationDto requestNotificationDto) {
-        Notifications notifications = notificationMapper.dtoToEntity(requestNotificationDto);
-        notifications.setNotificationStatus(NotificationStatus.PENDING);
-        notifications.setNotificationCreate(LocalDateTime.now());
-        return notificationMapper.entityToDto(notificationRepository.save(notifications));
-    }
-
-
-
-    public List<ResponseNotificationDto> sentNotification(int sizeToSent) {
-        List<Notifications> listSent = notificationRepository.findOldestNotifications(sizeToSent);
-        if (listSent.isEmpty()) {
-            throw new NotFoundException("NOT EXIST NOTIFICATIONS");
+    public StatusNotificationDto receiveNotification(RequestNotificationDto requestNotificationDto) {
+        Notifications notifications = notificationMapper.dtoRequestToEntity(requestNotificationDto);
+        if(checkIfNotificationAlreadyExist(notifications)){
+            throw new AlreadyExistException(NotificationMessage.EXIST.getMessage());
         }
-        listSent.forEach(s -> {
-            s.setNotificationStatus(NotificationStatus.SENT);
-            s.setNotificationSent(LocalDateTime.now());
-        });
+        notificationRepository.save(notifications);
+        processNotification(notifications);
+        return notificationMapper.confirmNotification(notifications);
+    }
 
-        notificationRepository.saveAll(listSent);
+    @Transactional
+    private void processNotification(Notifications notifications) {
 
-        return listSent.stream().map(notificationMapper::entityToDto).toList();
+        NotificationsQueue nq = notificationMapper.convertNotificationToQueueDto(notifications);
+
+        notifications.setStatus(NotificationStatus.PENDING);
+        notificationsQueueRepository.save(nq);
+        notificationRepository.save(notifications);
+    }
+
+
+    public boolean checkIfNotificationAlreadyExist(Notifications notifications) {
+
+        List<Notifications> notificationUserList = notificationRepository.findNotificationsByUserId(notifications.getUserId());
+        if (notificationUserList.isEmpty()) {
+            return false;
+        }
+
+        List<Notifications> checkDuplicates = notificationUserList.stream()
+                .filter(s -> {
+                    long diffMinutes = Duration.between(s.getCreatedAt(), notifications.getCreatedAt()).toMinutes();
+                    return diffMinutes < days;
+                })
+                .filter(s ->
+                        s.getUserId().equals(notifications.getUserId()) &&
+                                s.getMessage().equals(notifications.getMessage()) &&
+                                s.getTitle().equals(notifications.getTitle())
+                )
+                .toList();
+
+        return !checkDuplicates.isEmpty();
 
     }
+
+
 }

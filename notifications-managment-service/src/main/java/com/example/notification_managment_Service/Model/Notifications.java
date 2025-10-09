@@ -15,31 +15,40 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "notification")
 public class Notifications {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "notification_id")
     private Integer idNotification;
 
-    @Column(name = "user_id")
-    private Integer userId ;
+    @Column(name = "user_id", nullable = false)
+    private Integer userId;
 
-    @Column(name = "notification_type")
     @Enumerated(EnumType.STRING)
-    private NotificationType notificationType;
+    @Column(name = "notification_type", nullable = false)
+    private NotificationType type;
 
+    @Column(nullable = false, length = 30)
+    private String to;
+
+    @Column(nullable = false, length = 200)
     private String title;
 
+    @Column(nullable = false, length = 1000)
     private String message;
 
-    @Column(name = "notification_status")
     @Enumerated(EnumType.STRING)
-    private NotificationStatus notificationStatus;
+    @Column(name = "notification_status", nullable = false)
+    private NotificationStatus status = NotificationStatus.CREATE;
 
-    @Column (name = "notification_date")
-    private LocalDateTime notificationCreate;
+    @Column(name = "created_at", nullable = false)
+    private LocalDateTime createdAt = LocalDateTime.now();
 
-    @Column (name = "notification_sent")
-    private LocalDateTime notificationSent;
+    @Column(name = "sent_at")
+    private LocalDateTime sentAt;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "feedback_message")
+    private String feedbackMessage;
 
 }

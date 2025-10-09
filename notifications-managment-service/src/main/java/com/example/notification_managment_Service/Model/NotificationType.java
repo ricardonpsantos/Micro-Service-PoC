@@ -1,8 +1,11 @@
 package com.example.notification_managment_Service.Model;
 
+import lombok.Getter;
+
+@Getter
 public enum NotificationType {
-    EMAIL("Notificação Enviada por Email")
-    ,SMS("Notificação Enviada por Email");
+    EMAIL("Notificação Enviada por Email"),
+    SMS("Notificação Enviada por Sms");
 
     private final String description;
 
@@ -10,7 +13,5 @@ public enum NotificationType {
         this.description = description;
     }
 
-    public String getDescription() {
-        return description;
-    }
+
 }

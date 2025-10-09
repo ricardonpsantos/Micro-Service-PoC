@@ -15,3 +15,55 @@ Neste projeto usamos
  - Usar rabiitMQ
  - Docker para cada microserviço
  - CI/CD: GitHub Actions, GitLab CI, Jenkins
+
+
+
+
+
+ NOTIFICATIONS SERVICE MANAGMENTS :
+    - Notifications
+        - Enviar notificações ao cliente por email
+        - Permitir escalibilidade?
+        - controlador para ir buscar todas as notificações
+        - ter um persist para gravar
+        - usar mapper para ambos
+        - logica de envio de email
+        - enviar um emai, e permite que possa ser cancelado
+
+
+1) Criação e validação
+Campos obrigatórios: userId, type, title, message.
+Comprimentos: title ≤ 200, message ≤ 1000.
+Status inicial: sempre PENDING.
+createdAt preenchido no servidor.
+Template opcional: se type exigir template, validar placeholders vs. message.
+Preferências do utilizador (opcional/futuro): validar se o user aceitou aquele canal/horário (quiet hours).
+
+2) Enfileiramento (NotificationQueue)
+Ao criar Notification, criar linha na NotificationQueue com scheduledDate = now() (ou uma data futura para agendamento).
+Impedir duplicados próximos: se já existir notificação igual (mesmo userId, type, message) criada nos últimos N minutos, rejeitar ou consolidar (anti-spam).
+Rate limit por utilizador (ex.: máx. X notificações/1h).
+Lock de processamento: quando um worker “pega” a fila, marcar locked = true e definir TTL do lock; ao concluir, locked = false.
+
+3) Processamento/Envio
+Idempotência: cada Notification tem correlationId (ou notification_id como chave idempotente) — se o provider externo confirmar envio repetido, ignorar duplicatas.
+Tentativas: attemptCount ++ a cada falha; backoff exponencial; quando estourar o máximo, marcar status = FAILED e preencher errorMessage.
+Sucesso: setar status = SENT, sentAt = now().
+Auditoria/Logs: publicar evento NotificationSent/NotificationFailed no Kafka (para o serviço de logs) com correlationId.
+
+4) Agendamentos (scheduled)
+Notificações com scheduledDate > now() só podem ir a envio após a data/hora.
+Suportar “janela de silêncio” (ex.: não enviar entre 22:00–08:00; reagendar para 08:00).
+
+5) Atualizações e cancelamento
+Editável enquanto PENDING (título/mensagem/scheduledDate).
+Cancelável enquanto PENDING ou queued (na prática: se ainda não “locked”).
+Alterações em SENT ou FAILED são proibidas (apenas leitura).
+
+6) Conformidade/segurança
+GDPR: eliminar conteúdo sensível após N dias (retenção configurável) mantendo metadados mínimos para auditoria.
+Encriptação de campos sensíveis se aplicável (e.g., emails/telefones).
+Autorização: só o dono da notificação ou perfis administrativos podem aceder/gerir.
+
+7) Observabilidade e SLO
+Métricas: tempo de “create → sent”, taxa de sucesso, re-attempts, tamanho da fila, idade média da fila.

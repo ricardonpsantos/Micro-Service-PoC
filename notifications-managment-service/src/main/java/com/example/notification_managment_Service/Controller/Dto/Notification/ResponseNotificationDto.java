@@ -5,6 +5,7 @@ import com.example.notification_managment_Service.Model.NotificationType;
 import java.time.LocalDateTime;
 
 public record ResponseNotificationDto(
+        Integer idNotification,
         Integer userId,
         NotificationType notificationType,
         String title,
